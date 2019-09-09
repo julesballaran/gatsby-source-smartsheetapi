@@ -5,7 +5,7 @@ module.exports = {
       resolve: 'gatsby-source-smartapi',
       options: {
         sheetId: '3940651537590148',
-        tokken: process.env.TOKKEN
+        token: process.env.TOKEN
       }
     }
   ]

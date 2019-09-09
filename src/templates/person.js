@@ -3,6 +3,9 @@ import React from "react";
 export default ({ pageContext: { cells } }) => (
   <div style={{ width: 960, margin: "4rem auto" }}>
     <h1>{cells[3].displayValue}</h1>
+    <p>{cells[4].displayValue}</p>
+    <p>{cells[5].displayValue}</p>
+    <p>{cells[6].displayValue}</p>
     {/* <img src={pokemon.sprites.front_default} alt={pokemon.name} />
     <h2>Abilities</h2>
     <ul>
