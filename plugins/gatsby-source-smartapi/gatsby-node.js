@@ -1,14 +1,8 @@
-const axios = require("axios");
-const createNodeHelpers = require("gatsby-node-helpers").default;
-
-const get = endpoint => axios.get(`https://api.smartsheet.com/2.0/${endpoint}`, {
-    headers: {
-        'Authorization': 'Bearer hrd26x6opt9manpkxj16gd02ey'
-    }
-});
+const axios = require("axios")
+const createNodeHelpers = require("gatsby-node-helpers").default
 
 exports.sourceNodes = async ({ actions }, configOptions) => {
-    const { sheetId } = configOptions
+    const { sheetId, tokken } = configOptions
     const { createNode } = actions
     const { createNodeFactory } = createNodeHelpers({
         typePrefix: 'Smartsheet'
@@ -16,7 +10,11 @@ exports.sourceNodes = async ({ actions }, configOptions) => {
 
     const prepareSheets = createNodeFactory("Sheets");
 
-    const { data: allSheets } = await get(`sheets/${sheetId}`)
-    createNode(prepareSheets(allSheets))
+    const { data } = await axios.get(`https://api.smartsheet.com/2.0/sheets/${sheetId}`, {
+        headers: {
+            'Authorization': `Bearer ${tokken}`
+        }
+    });
+    createNode(prepareSheets(data))
 }
 
