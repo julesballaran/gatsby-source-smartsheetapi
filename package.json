@@ -18,7 +18,8 @@
     "gatsby": "^2.15.7",
     "gatsby-node-helpers": "^0.3.0",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "smartsheet": "^2.77.4"
   },
   "devDependencies": {
     "prettier": "^1.18.2"
