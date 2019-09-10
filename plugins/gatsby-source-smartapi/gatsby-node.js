@@ -1,7 +1,7 @@
 const axios = require("axios")
 const createNodeHelpers = require("gatsby-node-helpers").default
-var client = require('smartsheet');
-var smartsheet = client.createClient({
+const client = require('smartsheet');
+const smartsheet = client.createClient({
     accessToken: '81fxz87aw92fx3czom2lsa02kj'
   });
 
@@ -14,7 +14,7 @@ exports.sourceNodes = async ({ actions }) => {
 
     const prepareSheets = createNodeFactory("Sheets");
 
-    var options = {
+    const options = {
         queryParameters: {
           include: "attachments",
           includeAll: true
@@ -22,24 +22,26 @@ exports.sourceNodes = async ({ actions }) => {
       };
        
       // List all sheets
-    smartsheet.sheets.listSheets(options)
-    .then(function (result) {
-        console.log(result.data);
-        createNode(prepareSheets(result.data))
-        // var sheetId = result.data[0].id;                // Choose the first sheet
+    const sheets = await smartsheet.sheets.listSheets(options)
+    console.log(sheets.data);
+    // .then(function (result) {
+    //     console.log(result.data);
+    //     result.data.forEach(sheet => createNode(prepareSheets(sheet)) )
+        
+    //     // var sheetId = result.data[0].id;                // Choose the first sheet
     
-        // Load one sheet
-        // smartsheet.sheets.getSheet({id: sheetId})
-        // .then(function(sheetInfo) {
-        //     console.log(sheetInfo);
-        // })
-        // .catch(function(error) {
-        //     console.log(error);
-        // });
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
-
+    //     // Load one sheet
+    //     // smartsheet.sheets.getSheet({id: sheetId})
+    //     // .then(function(sheetInfo) {
+    //     //     console.log(sheetInfo);
+    //     // })
+    //     // .catch(function(error) {
+    //     //     console.log(error);
+    //     // });
+    // })
+    // .catch(function(error) {
+    //     console.log(error);
+    // });
+    sheets.data.forEach(sheet => createNode(prepareSheets(sheet)) )
 }
 
