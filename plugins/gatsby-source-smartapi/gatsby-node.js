@@ -1,4 +1,3 @@
-const axios = require("axios")
 const createNodeHelpers = require("gatsby-node-helpers").default
 const client = require('smartsheet');
 const smartsheet = client.createClient({
@@ -22,26 +21,17 @@ exports.sourceNodes = async ({ actions }) => {
       };
        
       // List all sheets
-    const sheets = await smartsheet.sheets.listSheets(options)
-    console.log(sheets.data);
-    // .then(function (result) {
-    //     console.log(result.data);
-    //     result.data.forEach(sheet => createNode(prepareSheets(sheet)) )
-        
-    //     // var sheetId = result.data[0].id;                // Choose the first sheet
+    const {data:listSheets} = await smartsheet.sheets.listSheets(options)
+    const getSheetsData = (listSheets) => 
+        Promise.all(
+            listSheets.map( async sheet => {
+                const sheetData = await smartsheet.sheets.getSheet({id: sheet.id})        
+                return sheetData
+
+            })
+        );
     
-    //     // Load one sheet
-    //     // smartsheet.sheets.getSheet({id: sheetId})
-    //     // .then(function(sheetInfo) {
-    //     //     console.log(sheetInfo);
-    //     // })
-    //     // .catch(function(error) {
-    //     //     console.log(error);
-    //     // });
-    // })
-    // .catch(function(error) {
-    //     console.log(error);
-    // });
-    sheets.data.forEach(sheet => createNode(prepareSheets(sheet)) )
+    const sheets = await getSheetsData(listSheets)
+    sheets.forEach(sheet => createNode(prepareSheets(sheet)))
 }
 
